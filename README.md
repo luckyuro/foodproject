@@ -12,6 +12,9 @@ with open("middle_file/wordFreq.pickle","rb") as f:
 with open("middle_file/classifier.pickle","rb") as cl:
     classifier = pickle.load(cl)
 
+def tokennize_tweet(tweet):
+    return set(nltk.word_tokenize(tweet))
+
 def extract_features(document):
     document_words = tokennize_tweet(document)
     features = {}
