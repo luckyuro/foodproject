@@ -12,7 +12,7 @@ client = MongoClient('mongodb://syz:password@ec2-52-211-37-84.eu-west-1.compute.
 db = client.twitter
 #print (db.collection_names())
 #'corn_collection', 'sugar_collection', 'coffee_collection', 'milk_collection'
-collection = db.coffee_collection
+collection = db.corn_collection
 """"
 l = []
 for i in range(0,100):
