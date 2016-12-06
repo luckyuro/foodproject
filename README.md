@@ -1,12 +1,12 @@
 # How to use the classifier
 ## the preparations should be done before using it
 * the lib needed
-```python3
+```python
 import nltk
 import pickle
 ```
 * prepare for the classifier
-```python3
+```python
 with open("middle_file/wordFreq.pickle","rb") as f:
     word_features = pickle.load(f)
 with open("middle_file/classifier.pickle","rb") as cl:
@@ -23,7 +23,7 @@ def extract_features(document):
     return features
 ```
 # use the classifier
-```python3
+```python
 s = """Candy corn trash they need to stop making that bullshit I wouldn't give my worst enemy candy corn , it taste like broken dreams and death https:// twitter.com/liveforxo_/sta tus/788649123029262337 …"""
 result = classifier.prob_classify(extract_features(s))
 #<class 'nltk.probability.DictionaryProbDist'>, {'_prob_dict': {'positive': -32.30537884272147, 'negative': -2.7182522899238393e-10}, '_log': True}
