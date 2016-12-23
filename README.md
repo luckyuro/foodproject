@@ -34,3 +34,16 @@ print (result.prob('negative'))
 print(classifier.classify(extract_features(s)))
 #negative
 ```
+
+**************
+
+# Use result from Maria(MySQL)
+## connecting to mysql database
+```python
+import pymysql as maria
+connection = maria.connect(host='svm-js1n16-comp6235-temp.ecs.soton.ac.uk',
+                           user='test',
+                           password='test',
+                           db='senti',
+                           cursorclass=maria.cursors.DictCursor)
+```
