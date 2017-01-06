@@ -47,3 +47,18 @@ connection = maria.connect(host='svm-js1n16-comp6235-temp.ecs.soton.ac.uk',
                            db='senti',
                            cursorclass=maria.cursors.DictCursor)
 ```
+after connected to the database, the data could be fetch from table agg_test by time_point and collection
+for example:
+```sql
+SELECT * FROM AGG_TEST WHERE time_point='2016-12-02 09:05' and collection='mcd_collection'
+```
+the tables has the structure
+```
+pos_retweets INT,
+neg_retweets INT,
+time_point DATETIME,
+collection VARCHAR(30),
+final_score DOUBLE,
+difference INT,
+PRIMARY KEY (time_point,collection)
+```
