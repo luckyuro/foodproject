@@ -33,3 +33,22 @@ difference INT,
 PRIMARY KEY (time_point,collection)
 );
 
+
+
+CREATE TABLE result(
+collection VARCHAR(30),
+final_score DOUBLE,
+stock_price DOUBLE,
+open_price DOUBLE,
+time_point DATETIME,
+PRIMARY KEY (time_point,collection)
+);
+
+CREATE TABLE result_set(
+collection VARCHAR(30),
+final_score DOUBLE,
+stock_price DOUBLE,
+open_price DOUBLE,
+time_point DATETIME,
+PRIMARY KEY (time_point,collection)
+);
