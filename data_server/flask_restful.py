@@ -3,6 +3,13 @@ import json
 import pymysql as maria
 from flask_cors import CORS, cross_origin
 from pymongo import MongoClient
+from bson.objectid import ObjectId
+from pymongo.errors import AutoReconnect
+import time
+from bson import json_util
+
+
+
 
 app = Flask(__name__)
 
@@ -16,44 +23,45 @@ maria_cursor = connection.cursor()
 client = MongoClient('mongodb://syz:password@svm-ys3n15-comp6235-temp.ecs.soton.ac.uk:27017/test')
 db = client.test
 
-def from_db(table,name,start,end):
+def check_maria_connection():
     if connection.open:
         pass
     else:
         connection.connect()
+
+def mongo_by_id(col,id_str):
+    try:
+        return col.find_one({"_id": ObjectId(id_str)},{"_id":0})
+    except AutoReconnect:
+        time.sleep(2)
+        return col.find_one({"_id": ObjectId(id_str)},{"_id":0})
+
+def from_db(table,name,start,end):
+    check_maria_connection()
     sql = """SELECT `final_score` as price ,UNIX_TIMESTAMP(time_point) as date FROM %s WHERE collection ="%s" AND time_point BETWEEN "%s" AND "%s" """%(table,name,start,end)
     maria_cursor.execute(sql)
     return maria_cursor.fetchall()
 
 def result(collection):
-    if connection.open:
-        pass
-    else:
-        connection.connect()
+    check_maria_connection()
     sql = """SELECT UNIX_TIMESTAMP(time_point) AS date, `stock_price` AS price, `final_score` AS score FROM result WHERE collection='%s' """
     maria_cursor.execute(sql%collection)
     return maria_cursor.fetchall()
 
 def result_set(collection):
-    if connection.open:
-        pass
-    else:
-        connection.connect()
+    check_maria_connection()
     sql = """SELECT UNIX_TIMESTAMP(time_point) AS date, `stock_price` AS price, `final_score` AS score, `open_price` AS open FROM result_set WHERE collection='%s' """
     maria_cursor.execute(sql%collection)
     return maria_cursor.fetchall()
 
-def get_tweets(timestamp):
-    if connection.open:
-        pass
-    else:
-        connection.connect()
-    sql = "SELECT object_id,collection FROM tweets WHERE times between SUBTIME(FROM_UNIXTIME(%s),\'1:0:0\') and FROM_UNIXTIME(%s) LIMIT 25"%(timestamp,timestamp)
+def get_tweets(collection, timestamp):
+    check_maria_connection()
+    sql = "SELECT object_id FROM tweets WHERE collection = \'%s\'and times between SUBTIME(FROM_UNIXTIME(%s),\'1:0:0\') and FROM_UNIXTIME(%s) ORDER BY retweets DESC LIMIT 25"%(collection,timestamp,timestamp)
     maria_cursor.execute(sql)
-    idl = [(x['object_id'],x['collection']) for x in maria_cursor]
-    for item in idl:
-        col = eval('db.'+item[1])
-        col.find({})
+    idl = [x['object_id'] for x in maria_cursor]
+    col = eval('db.'+collection)
+    return [mongo_by_id(col,x) for x in idl]
+
 
 
 
@@ -96,8 +104,9 @@ def api_period(collection):
 def api_period_new(collection):
     return json.dumps(result_set(collection))
 
-@app.route('/tweets/<timestamp>')
-def api_get_tweets(timestamp):
+@app.route('/tweets/<collection>/<timestamp>')
+def api_get_tweets(collection,timestamp):
+    return json.dumps(get_tweets(collection,str(timestamp)),default=json_util.default)
 
 
 
