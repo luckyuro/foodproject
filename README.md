@@ -1,12 +1,17 @@
 # How to use the classifier
 ## the preparations should be done before using it
 This part mainly follows the step in Laurent Luce's Blog
-[http://www.laurentluce.com/posts/twitter-sentiment-analysis-using-python-and-nltk/](http://www.laurentluce.com/posts/twitter-sentiment-analysis-using-python-and-nltk/)
-And also used some achievements from git hub user
-[Jeffrey Breen](https://github.com/jeffreybreen) with his repo [jeffreybreen/twitter-sentiment-analysis-tutorial-201107](https://github.com/jeffreybreen/twitter-sentiment-analysis-tutorial-201107)
-and 
+[http://www.laurentluce.com/posts/twitter-sentiment-analysis-using-python-and-nltk/](http://www.laurentluce.com/posts/twitter-sentiment-analysis-using-python-and-nltk/) 
+
+And also used some achievements from git hub user 
+
+[Jeffrey Breen](https://github.com/jeffreybreen) with his repo [jeffreybreen/twitter-sentiment-analysis-tutorial-201107](https://github.com/jeffreybreen/twitter-sentiment-analysis-tutorial-201107) 
+
+and  
+
 [Richard Everett](https://github.com/RichEverett) with his repo [RichEverett/twitter](https://github.com/RichEverett/twitter)
-* the lib needed
+* the lib needed 
+
 ```python
 import nltk
 import pickle
